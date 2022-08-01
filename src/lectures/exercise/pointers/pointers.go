@@ -16,8 +16,35 @@
 
 package main
 
-import "fmt"
+type Tag struct {
+	active bool
+}
+
+type Store struct {
+	tags []Tag
+}
+
+// Create functions to activate and deactivate security tags using pointers
+
+func (s *Store) Activate() {
+	for _, t := range s.tags {
+		t.active = true
+	}
+}
+
+//* Create a checkout() function which can deactivate all tags in a slice
+func (s *Store) Deactivate() {
+	for _, t := range s.tags {
+		t.active = false
+	}
+}
 
 func main() {
+	// - Create at least 4 items, all with active security tags
+	//  - Store them in a slice or array
+	var state Store = Store{tags: []Tag{{active: true}, {active: true}, {active: true}, {active: true}}}
+	//  - Deactivate any one security tag in the array/slice
 
+	//  - Call the checkout() function to deactivate all tags
+	//  - Print out the array/slice after each change
 }

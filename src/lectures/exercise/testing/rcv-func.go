@@ -41,13 +41,13 @@ func printPlayerStats(p *Player) {
 	fmt.Println()
 }
 
-func MakePlayer(name string, maxHP, maxEP uint) *Player {
+func MakePlayer(name string, hp, maxHP, ep, maxEP uint) *Player {
 
 	pl := Player{
 		name:      name,
-		health:    maxHP / 2,
+		health:    hp,
 		maxHealth: maxHP,
-		energy:    maxEP / 2,
+		energy:    ep,
 		maxEnergy: maxEP,
 	}
 	return &pl
@@ -97,7 +97,7 @@ func (p *Player) addEnergy(points uint) {
 
 func main() {
 
-	me := MakePlayer("Michail", 100, 100)
+	me := MakePlayer("Michail", 50, 100, 50, 100)
 	printPlayerStats(me)
 	me.addEnergy(10)
 	me.addHealth(30)

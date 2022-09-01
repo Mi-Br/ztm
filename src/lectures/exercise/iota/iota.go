@@ -14,9 +14,41 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
+
+type Operation int
+
+const (
+	Add = iota
+	Sub
+	Mul
+	Div
+)
+
+func (f *Operation) calculate(n1, n2 int) int {
+	switch *f {
+	case Add:
+		return n1 + n2
+	case Sub:
+		return n1 - n2
+	case Mul:
+		return n1 * n2
+	case Div:
+		return n1 / n2
+	}
+	panic("unhandled case")
+}
 
 func main() {
+
+	add := Operation(Add)
+	fmt.Println(add)
+	sub := Operation(Sub)
+	mul := Operation(Mul)
+	div := Operation(Div)
+
 	fmt.Println(add.calculate(2, 2)) // = 4
 
 	fmt.Println(sub.calculate(10, 3)) // = 7

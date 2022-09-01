@@ -112,7 +112,7 @@ func (l *Library) Print() {
 
 	fmt.Println("subscirbers:", subscribers)
 	fmt.Println("returned books", booksIn)
-	fmt.Println("takenbooks", booksOut)
+	fmt.Println("leased books", booksOut)
 }
 
 func main() {
@@ -140,6 +140,7 @@ func main() {
 	library.CheckOut(Book("Snowflake"), "John")
 	library.CheckOut(Book("Head first: javascript"), "kate")
 	library.Print()
+
 	//  - Check out a book
 	//  - Check in a book
 	//  - Print out initial library information, and after each change

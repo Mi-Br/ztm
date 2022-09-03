@@ -18,8 +18,61 @@
 
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"math/rand"
+	"os"
+	"strings"
+)
 
 func main() {
+
+	dict := []string{
+		"Not feeling well today, you?",
+		"How is weather today?",
+		"Are you single?",
+		"Hope things are going well for you?",
+		"Are you alone?",
+		"Would you like to chat or what?",
+	}
+
+	var (
+		commandCount, linesCount int
+	)
+
+	rand.Seed(5)
+	random := rand.Intn(len(dict))
+	commandCount, linesCount = 0, 0
+	for {
+		fmt.Println("type something pls...")
+		inp := os.Stdin
+		r := bufio.NewReader(inp)
+
+		input, inpErr := r.ReadString('\n')
+		if inpErr == nil {
+			commandCount += 1
+			if len(input) > 0 && input[0] != byte('\n') {
+				linesCount += 1
+			}
+			switch strings.TrimSpace(input) {
+			case "q":
+				fmt.Printf("Closing applicaiton, number of new lines: %v, number of commands: %v", linesCount, commandCount)
+				return
+			case "Q":
+				fmt.Printf("Closing applicaiton, number of new lines: %v, number of commands: %v", linesCount, commandCount)
+				return
+			case "hello":
+				fmt.Println(dict[random])
+			case "bye":
+				fmt.Println(dict[random])
+			default:
+				continue
+			}
+		} else {
+			fmt.Println("Something went wrong, please try again (type <Q> or <q> followed by Enter - to quit")
+			continue
+		}
+	}
 
 }

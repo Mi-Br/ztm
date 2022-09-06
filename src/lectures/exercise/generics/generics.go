@@ -15,7 +15,10 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"ztm/src/lectures/constraints" // TODO wokring with go packages
+)
 
 type Distance int32
 type Velocity float64
@@ -31,6 +34,24 @@ type Velocity float64
 /*
 func clamp(value, min, max) clamped_value {}
 */
+
+type numbers interface {
+	int8 | uint32 | float32 | ~int32 | ~float64
+}
+
+type myConstraints interface {
+	constraints.Integer
+}
+
+func clamp[T numbers](val, min, max T) T {
+	switch {
+	case val < min:
+		return min
+	case val > max:
+		return max
+	}
+	return val
+}
 
 func testClampInt8() {
 	var (

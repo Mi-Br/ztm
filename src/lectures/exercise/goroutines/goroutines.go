@@ -29,11 +29,60 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"os"
 	"strconv"
+	"strings"
 	"time"
+
+	// "io"
+	"os"
+	// "time"
 )
+
+type FileOpenError struct {
+	msg, context string
+}
+
+func (e *FileOpenError) Error() string {
+	return fmt.Sprint("Error opening file: %v, context %v", e.msg, e.context)
+}
+
+func readFileAndSum(name string, s *int) (err error) {
+	line := 0
+	file, err := os.Open(name)
+	if err != nil {
+		return &FileOpenError{msg: name, context: "@Opening file"}
+	} else {
+		r := bufio.NewReader(file)
+		for {
+			str, line_err := r.ReadString('\n')
+			line++
+			if line_err == nil {
+				val, err := strconv.Atoi(strings.Trim(str, "\n"))
+				if err == nil {
+					*s += val
+				} else {
+					// fmt.Println(err)
+					// fmt.Printf("Cannot convert value in file %v, line %v, skiping", name, line)
+					continue
+				}
+			}
+			if line_err == io.EOF {
+				break
+			}
+		}
+	}
+	return nil
+}
 
 func main() {
 	files := []string{"num1.txt", "num2.txt", "num3.txt", "num4.txt", "num5.txt"}
+	totalSum := 0
+	fmt.Println("Syncing....")
+	for _, f := range files {
+		go readFileAndSum(f, &totalSum)
+	}
+
+	fmt.Println("Syncing....")
+	time.Sleep(5 * time.Second)
+	fmt.Println(totalSum)
 }

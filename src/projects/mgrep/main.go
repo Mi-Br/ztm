@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"io/fs"
+	"mgrep/dirsearch"
 	"os"
+	"sync"
 )
 
 //--Requirements:
@@ -17,35 +18,25 @@ import (
 //
 //--Notes:
 
-type DirectoryStack []fs.DirEntry
-type FileStack []fs.File
-
-func ProcessDirectory(path string, Dirs *DirectoryStack, Files *FileStack) {
-	files, error := os.ReadDir(path)
-	if error != nil {
-		fmt.Println(error)
-	} else {
-		fmt.Println(files)
-	}
-}
-
 func main() {
 
-	dStack := DirectoryStack{}
-	fStack := FileStack{}
-
 	inp := os.Args
-	dir := inp[2]
-	fileSearch("whatever")
-	list, err := os.ReadDir(dir)
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		for _, f := range list {
-			fmt.Println(f.Name(), f.IsDir())
-		}
+	if len(inp) < 3 {
+		fmt.Println("Please provide search arguments mgrep <file> <folder>")
+		return
 	}
-	// list down context of directory
 
-	// mgrep search_string search_dir
+	dir := inp[2]
+	var fs chan string = make(chan string)
+	var fwg sync.WaitGroup
+	fwg.Add(1)
+	go dirsearch.GetDirsAndFiles(dir, &fs, &fwg) // I cannot add to the channel if its not ready to be lisened from so havving goroutine is a must for code to work
+
+	for {
+		select {
+		case file := <-fs:
+			fmt.Println(file)
+		}
+		fwg.Wait()
+	}
 }

@@ -19,7 +19,48 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
+	"sync"
 )
 
-func main() {}
+type LetterCount struct {
+	number int
+	sync.Mutex
+}
+
+func readInput() []string {
+	fmt.Println("Provide text and hit enter to count the words")
+	rd := bufio.NewReader(os.Stdin)
+	txt, err := rd.ReadString('\n')
+	if err != nil {
+		fmt.Println(err)
+		return []string{}
+	} else {
+		return strings.Split(txt, " ")
+	}
+}
+
+func countLetters(wg *sync.WaitGroup, lc *LetterCount, word string) {
+	count := len(word)
+	lc.Lock()
+	defer wg.Done()
+	defer lc.Unlock()
+	lc.number += count
+	fmt.Printf("Routine finished for, %v. Counted + %v \n ", word, count)
+}
+
+func main() {
+	var lcount LetterCount
+	var wg sync.WaitGroup
+	words := readInput()
+
+	for i := 0; i < len(words); i++ {
+		wg.Add(1)
+		go countLetters(&wg, &lcount, words[i])
+	}
+	wg.Wait()
+	fmt.Println("\n\nRoutines finished, final count: ", lcount)
+}

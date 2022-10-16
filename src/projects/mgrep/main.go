@@ -4,7 +4,11 @@ import (
 	"fmt"
 	"mgrep/dirsearch"
 	"os"
+<<<<<<< HEAD
 	"sync"
+=======
+	"mgrep/filesearch"
+>>>>>>> main
 )
 
 //--Requirements:

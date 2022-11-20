@@ -14,12 +14,4 @@ const (
 
 func main() {
 
-	switch price() {
-	case 0:
-		fmt.Println("Economy")
-	case 1:
-		fmt.Println("Business")
-	case 2:
-		fmt.Println("First")
-	}
 }

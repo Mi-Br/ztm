@@ -19,5 +19,7 @@ Raw literal: `Lets code together` use when strings have single/double quotes
 #variables
 
 
+# Concurrency
 
+`time.After() returns channel and publishes timestamp after time expires. Consider it as snooze. Can be very helpfull controlling goroutine select block
 

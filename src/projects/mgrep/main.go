@@ -4,11 +4,6 @@ import (
 	"fmt"
 	"mgrep/dirsearch"
 	"os"
-<<<<<<< HEAD
-	"sync"
-=======
-	"mgrep/filesearch"
->>>>>>> main
 )
 
 //--Requirements:
@@ -32,8 +27,6 @@ func main() {
 
 	dir := inp[2]
 	var fs chan string = make(chan string)
-	var fwg sync.WaitGroup
-	fwg.Add(1)
 	go dirsearch.GetDirsAndFiles(dir, &fs, &fwg) // I cannot add to the channel if its not ready to be lisened from so havving goroutine is a must for code to work
 
 	for {
